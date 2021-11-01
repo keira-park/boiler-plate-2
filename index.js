@@ -4,6 +4,7 @@ const port = 5000
 const bodyParser = require('body-parser');
 const {User} = require('./models/User');
 
+const config = require('./config/key');
 
 // application/x-www-form-urlencoded 이렇게 생긴 데이터를 분석해서 가져올 수 있게 한다.
 app.use(bodyParser.urlencoded({extended: true}));
@@ -12,12 +13,12 @@ app.use(bodyParser.json());
 
 
 const mongoose = require('mongoose')
-mongoose.connect(`mongodb+srv://keira-park:abcd1234@boiler-plate-2.rqhet.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
+mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology: true
 }).then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err))
 
-app.get('/', (req, res) => res.send('Hello World!~~안녕하세요!!!'))
+app.get('/', (req, res) => res.send('Hello World!~~안녕하세요!!!오늘도 수고했어'))
 
 app.post('/register', (req, res) => {
     // 회원가입할 때 필요한 정보들을 client에서 가져오면
