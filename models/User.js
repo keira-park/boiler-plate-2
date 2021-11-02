@@ -59,7 +59,7 @@ userSchema.methods.comparePassword = function(plainPassword, cb) {
     // plainPassword 1234567 암호화된 비밀번호 "$2b$10$0kdtvYEiA0hNnKDOtJeepOAR9eXPnVyOQ0rZKNmM.UQB1Qjdr8zx."
     // 이미 암호화된 비밀번호를 복구할 수는 없으므로, plainPassword를 다시 같은 방식으로 해시화한 후 두 개를 비교해야 한다.
     bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
-        if (err) return cb(err),
+        if (err) return cb(err);
         cb(null, isMatch) // true!
     })
 }
