@@ -35,7 +35,7 @@ const userSchema = mongoose.Schema({
 })
 
 // userSchema를 저장('save')하기 전에(pre) 암호화 function해준다.
-userSchema.pre('save', function(next){
+userSchema.pre('save', function(next) {
     var user = this; // this -> userSchema를 가리킴.
 
     // 모델 안에 'password' 속성이 변화할 때만 bcrypt를 이용해서 해시화해준다.
@@ -43,6 +43,7 @@ userSchema.pre('save', function(next){
     // 비밀 번호를 암호화시킨다.
         bcrypt.genSalt(saltRounds, function(err, salt){
             if (err) return next(err)
+
             bcrypt.hash(user.password, salt, function(err, hash) {
                 if (err) return next(err)
                 user.password = hash // 해시된 비번으로 user.password를 바꿔준다.
@@ -68,7 +69,7 @@ userSchema.methods.comparePassword = function(plainPassword, cb) {
 userSchema.methods.generateToken = function(cb) {
     // jsonwebtoken을 이용해서 token을 생성하기
     var user = this; // this -> userSchema를 가리킴.
-
+    /* console.log('user.id', user._id) */
     var token = jwt.sign(user._id.toHexString(), 'secretToken')
 
     /* user._id + 'secretToken' => token 둘을 합쳐서 토큰을 만듦.
@@ -79,6 +80,20 @@ userSchema.methods.generateToken = function(cb) {
     user.save(function(err, user) {
         if (err) return cb(err)
         cb(null, user)
+    })
+}
+
+userSchema.statics.findByToken = function(token, cb) {
+    var user = this;
+
+    // 토큰을 decode한다.
+    jwt.verify(token, 'secretToken', function(err, decoded) {
+        // 유저 아이디를 이용해서 유저를 찾은 다음에
+        // 클라이언트에서 가져온 token과 DB에 보관된 토큰이 일치하는지 확인한다.
+        user.findOne({ "_id": decoded, "token": token }, function(err, user) {
+            if (err) return cb(err); /* 에러가 있다면 콜백으로 에러 전달 */
+            cb(null, user) /* 에러가 없다면 null, 유저 정보 전달. */
+        })
     })
 }
 
