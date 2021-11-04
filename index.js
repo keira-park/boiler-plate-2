@@ -3,15 +3,18 @@ const app = express()
 const port = 5000
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {User} = require('./models/User');
-
 const config = require('./config/key');
 
+const {auth} = require('./middleware/auth');
+const {User} = require('./models/User');
+
+
+
 // application/x-www-form-urlencoded 이렇게 생긴 데이터를 분석해서 가져올 수 있게 한다.
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 타입으로 된 데이터를 파싱한다.
 app.use(bodyParser.json());
-
+app.use(cookieParser());
 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
@@ -21,7 +24,7 @@ mongoose.connect(config.mongoURI, {
 
 app.get('/', (req, res) => res.send('Hello World!~~안녕하세요!!!오늘도 수고했어'))
 
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
     // 회원가입할 때 필요한 정보들을 client에서 가져오면
     // 그것들을 데이터 베이스에 넣어준다.
 
@@ -40,7 +43,7 @@ app.post('/register', (req, res) => {
     })
 })
 
-app.post('/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
 
     // 요청된 이메일이 데이터 베이스에서 있는지 찾는다.
     User.findOne({ email: req.body.email }, (err, user) => {
@@ -68,6 +71,34 @@ app.post('/login', (req, res) => {
             })
         })
     })
+})
+
+app.get('/api/users/auth', auth, (req, res) => {
+    /* 여기까지 왔다는 것은 미들웨어를 에러 리턴 없이 잘 빠져 나왔다는 뜻,
+    Authentication이 true라는 말 */
+    res.status(200).json({
+        _id: req.user._id,
+        /* role 0 -> 일반 유저, role 0이 아니면 관리자 */
+        isAdmin: req.user.role === 0 ? false : true,
+        isAuth: true,
+        email: req.user.email, 
+        name: req.user.name, 
+        lastname: req.user.lastname, 
+        role: req.user.role, 
+        image: req.user.image
+        /* 이렇게 응답을 받아오면 어떤 페이지에서든지 유저 정보를 쓸 수 있어서 편리 */
+    })
+})
+
+app.get('/api/users/logout', auth, (req, res) => {
+    User.findOneAndUpdate({ _id: req.user._id }, 
+        { token: "" } /* 토큰을 null로 바꿔준다 */
+        , (err, user) => {
+            if (err) return res.json({ success: false, err });
+            return res.status(200).send({
+                success: true
+            })
+        })
 })
 
 
