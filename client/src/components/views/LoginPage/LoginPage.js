@@ -1,7 +1,8 @@
-import { Axios } from 'axios'
+// import { Axios } from 'axios'
 import React, { useState } from 'react'
+import { loginUser } from '../../../_actions/user_actions'
 import { useDispatch } from 'react-redux'
-import { loginUser } from '../../../_actions/user_action'
+
 
 function LoginPage() {
     const dispatch = useDispatch();
@@ -27,12 +28,7 @@ function LoginPage() {
             password: Password
         }
 
-        dispatch(loginUser(body))
-
-        Axios.post('/api/user/login', body)
-            .then(response => {
-                
-            })
+        dispatch(loginUser(body));
     }
 
     return (
@@ -48,7 +44,7 @@ function LoginPage() {
                 <label>Password</label>
                 <input type="password" value={Password} onChange={onPasswordHandler} />
                 <br />
-                <button sy>
+                <button>
                     Login
                 </button>
             </form>
@@ -56,4 +52,4 @@ function LoginPage() {
     )
 }
 
-export default LoginPage
+export default LoginPage;
