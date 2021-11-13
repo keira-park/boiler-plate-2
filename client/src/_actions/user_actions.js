@@ -1,4 +1,4 @@
-import axios from 'axois';
+import axios from 'axios';
 import {
     LOGIN_USER
 } from './types';
