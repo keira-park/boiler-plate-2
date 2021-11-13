@@ -2,9 +2,10 @@
 import React, { useState } from 'react'
 import { loginUser } from '../../../_actions/user_actions'
 import { useDispatch } from 'react-redux'
+// import { response } from 'express'; 프론트에서는 백의 express에서 import해올 수 없음
 
 
-function LoginPage() {
+function LoginPage(props) {
     const dispatch = useDispatch();
 
     const [Email, setEmail] = useState("")
@@ -28,7 +29,14 @@ function LoginPage() {
             password: Password
         }
 
-        dispatch(loginUser(body));
+        /* 처음 페이지로 이동 */
+        dispatch(loginUser(body))
+            .then(response => {
+                if (response.payload.loginSuccess) { /* if true, since loginSuccess = true */
+                    // 리액트에서 페이지를 이동할 때는 props.history.push
+                    props.history.push('/');
+                }
+            })
     }
 
     return (
