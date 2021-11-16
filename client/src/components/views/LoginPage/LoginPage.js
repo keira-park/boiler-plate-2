@@ -34,6 +34,7 @@ function LoginPage(props) {
       .then(response => {
         if (response.payload.loginSuccess) { /* if true, since loginSuccess = true */
           // 리액트에서 페이지를 이동할 때는 props.history.push
+          /* LandingPage로 이동 */
           props.history.push('/');
         }
       })

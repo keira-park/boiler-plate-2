@@ -14,6 +14,7 @@ function LandingPage(props) {
       .then(response => {
         // console.log(response.data)
         if (response.data.success) {
+          /* 로그인 페이지로 이동 */
           props.history.push("/login")
         } else { alert('로그아웃에 실패했습니다.') }
       })
