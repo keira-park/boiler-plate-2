@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import axios from 'axios';
 import { Button } from 'antd';
+import { withRouter } from 'react-router-dom';
 
 function LandingPage(props) {
 
@@ -15,7 +16,7 @@ function LandingPage(props) {
         // console.log(response.data)
         if (response.data.success) {
           /* 로그인 페이지로 이동 */
-          props.history.push("/login")
+          props.history.push('/login')
         } else { alert('로그아웃에 실패했습니다.') }
       })
   }
@@ -33,4 +34,4 @@ function LandingPage(props) {
   )
 }
 
-export default LandingPage;
+export default withRouter(LandingPage);
