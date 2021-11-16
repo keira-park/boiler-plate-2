@@ -72,8 +72,9 @@ app.post('/api/users/login', (req, res) => {
 })
 
 app.get('/api/users/auth', auth, (req, res) => {
-  /* 여기까지 왔다는 것은 auth 미들웨어를 에러 리턴 없이 잘 빠져 나왔다는 뜻,
-  Authentication이 true라는 말 */
+
+  // 여기까지 왔다는 것은 auth 미들웨어를 에러 리턴 없이 잘 빠져 나왔다는 뜻,
+  // Authentication is true
   res.status(200).json({
     _id: req.user._id,
     /* role 0 -> 일반 유저, role 0이 아니면 관리자 */
