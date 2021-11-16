@@ -1,12 +1,12 @@
 import {
-    LOGIN_USER
+  LOGIN_USER
 } from '../_actions/types';
 
 export default function Reducer(state={}, action){
-    switch (action.type) {
-        case LOGIN_USER:
-            return {...state, loginSuccess: action.payload}
-        default:
-            return state;
-    }
-} 
+  switch (action.type) {
+    case LOGIN_USER:
+      return {...state, loginSuccess: action.payload}
+    default:
+      return state;
+  }
+}
