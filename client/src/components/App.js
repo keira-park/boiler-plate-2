@@ -10,17 +10,16 @@ import {
 import LandingPage from './views/LandingPage/LandingPage';
 import LoginPage from './views/LoginPage/LoginPage';
 import RegisterPage from './views/RegisterPage/RegisterPage';
-// import NavBar from "./views/NavBar/NavBar";
-// import Footer from "./views/Footer/Footer"
+import Auth from '../hoc/auth';
 
 function App() {
   return (
     <Router>
       <div>
         <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/register" component={RegisterPage} />
+          <Route exact path="/" component={Auth(LandingPage, null)} />
+          <Route path="/login" component={Auth(LoginPage, false)} />
+          <Route path="/register" component={Auth(RegisterPage, false)} />
         </Switch>
       </div>
     </Router>
@@ -28,4 +27,4 @@ function App() {
 }
 
 
-export default App; 
+export default App;
