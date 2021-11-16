@@ -1,9 +1,9 @@
 // import { Axios } from 'axios'
-import React, { useState } from 'react'
-import { loginUser } from '../../../_actions/user_actions'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import { loginUser } from '../../../_actions/user_actions';
+import { useDispatch } from 'react-redux';
 // import { response } from 'express'; 프론트에서는 백의 express에서 import해올 수 없음
-
+import { withRouter } from 'react-router-dom';
 
 function LoginPage(props) {
   const dispatch = useDispatch();
@@ -50,10 +50,12 @@ function LoginPage(props) {
       >
         <label>Email</label>
         <input type="email" value={Email} onChange={onEmailHandler} />
+
         <label>Password</label>
         <input type="password" value={Password} onChange={onPasswordHandler} />
         <br />
-        <button>
+
+        <button type="submit">
             Login
         </button>
       </form>
@@ -61,4 +63,4 @@ function LoginPage(props) {
   )
 }
 
-export default LoginPage;
+export default withRouter(LoginPage);
